@@ -67,37 +67,53 @@ function Header() {
   );
 }
 function Menu() {
+  const pizzas = pizzaData;
+  const numPizza = pizzas.length;
   return (
     <div className="menu">
       <h2>Our Menu</h2>
-      <Pizza />
-      <Pizza />
-      <Pizza />
-      <Pizza />
-    </div>
-  );
-}
-function Footer() {
-  const hour = new Date().getHours();
-  const openHour = 12;
-  const closeHour = 22;
-  //   const isOpen = hour >= openHour && hour <= closeHour;
-  //   if (isOpen) alert("We are currently open!");
-  //   else alert("Sorry we're close");
-  return (
-    <div>
-      <footer>{new Date().toLocaleDateString()}. We're currently open</footer>
+      {numPizza > 0 ? (
+        <ul className="pizzas">
+          {pizzaData.map((pizza) => (
+            <Pizza pizzaObj={pizza} key={pizza.name} />
+          ))}
+        </ul>
+      ) : null}
     </div>
   );
 }
 
-function Pizza() {
+function Pizza({ pizzaObj }) {
   return (
     <>
-      <img src="pizzas/prosciutto.jpg" alt="Pizza Prosciutto" />
-      <h3> Pizza Prosciutto</h3>;
-      <p>Tomato, mozarella, ham, aragula, and burrata cheese</p>
+      <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
+        <img src={pizzaObj.photoName} alt={pizzaObj.name} />
+        <h3>{pizzaObj.name}</h3>
+        <p> {pizzaObj.ingredients}</p>
+        <span>{pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price}</span>
+      </li>
     </>
+  );
+}
+function Footer() {
+  const hour = new Date().getHours();
+  const openHour = 11;
+  const closeHour = 22;
+  const isOpen = hour >= openHour && hour <= closeHour;
+  //   if (isOpen) alert("We are currently open!");
+  //   else alert("Sorry we're close");
+
+  return (
+    <footer className="footer">
+      {isOpen ? (
+        <div className="order">
+          <p>We're open until {closeHour}:00. Come visit us or order online</p>
+          <button className="btn">Order Now</button>
+        </div>
+      ) : (
+        <p>not yet open</p>
+      )}
+    </footer>
   );
 }
 
